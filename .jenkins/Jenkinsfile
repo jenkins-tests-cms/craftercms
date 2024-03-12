@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+  stages {
+
+    stage('Build Crafter CMS') {
+      steps {
+        dir('craftercms') {
+          sh './gradlew build'
+        }
+      }
+    }
+    stage('Deploy Crafter CMS') {
+      steps {
+        dir('craftercms') {
+          sh './gradlew deploy'
+        }
+      }
+    }
+
+  }
+  post {
+    always {
+      archiveArtifacts artifacts: 'craftercms/crafter-authoring/logs/**/**', fingerprint: true
+      archiveArtifacts artifacts: 'craftercms/crafter-delivery/logs/**/**', fingerprint: true
+
+    }
+  }
+  options {
+    timestamps()
+  }
+}
