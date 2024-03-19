@@ -1,36 +1,27 @@
 pipeline {
   agent any
   stages {
-
     stage('Build Crafter CMS') {
       steps {
-        dir('craftercms') {
-          sh './gradlew build'
-        }
+        sh './gradlew build' 
       }
     }
     stage('Deploy Crafter CMS') {
       steps {
-        dir('craftercms') {
-          sh './gradlew deploy'
-        }
+        sh './gradlew deploy'
       }
     }
 
     stage('Bundle Crafter CMS') {
       steps {
-        dir('craftercms') {
-          sh './gradlew bundle'
-        }
+        sh './gradlew bundle'
       }
     }
-
   }
+  
   post {
     always {
       archiveArtifacts artifacts: 'bundles/**', fingerprint: true
-      
-
     }
   }
   options {
