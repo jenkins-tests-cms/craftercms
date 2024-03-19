@@ -1,6 +1,19 @@
 pipeline {
   agent any
   stages {
+    stage('Checkout CrafterCMS') {
+      checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[credentialsId: 'crafter-qa-ssh', url: 'git@github.com:craftercms/craftercms.git']])
+      
+    }
+    
+    stage('Update Crafter CMS') {
+      sshagent(['crafter-qa-ssh']) {
+      // some block
+        sh 'sed -i "s#https://github.com/craftercms#git@github.com:craftercms#g" gradle.properties'
+        sh './gradlew update -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true' 
+      }
+    }
+    
     stage('Build Crafter CMS') {
       steps {
         sh './gradlew build -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true' 
@@ -26,5 +39,6 @@ pipeline {
   }
   options {
     timestamps()
+    skipDefaultCheckout()
   }
 }
