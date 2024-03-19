@@ -3,18 +3,18 @@ pipeline {
   stages {
     stage('Build Crafter CMS') {
       steps {
-        sh './gradlew build' 
+        sh './gradlew build -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true' 
       }
     }
     stage('Deploy Crafter CMS') {
       steps {
-        sh './gradlew deploy'
+        sh './gradlew deploy -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true'
       }
     }
 
     stage('Bundle Crafter CMS') {
       steps {
-        sh './gradlew bundle'
+        sh './gradlew bundle -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true'
       }
     }
   }
