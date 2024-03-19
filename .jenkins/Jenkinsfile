@@ -7,11 +7,14 @@ pipeline {
     }
     
     stage('Update Crafter CMS') {
-      sshagent(['crafter-qa-ssh']) {
-      // some block
-        sh 'sed -i "s#https://github.com/craftercms#git@github.com:craftercms#g" gradle.properties'
-        sh './gradlew update -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true' 
+      steps {
+        sshagent(['crafter-qa-ssh']) {
+        // some block
+          sh 'sed -i "s#https://github.com/craftercms#git@github.com:craftercms#g" gradle.properties'
+          sh './gradlew update -PquietBuild=false -PrefreshEnv=true -PoverwriteArtifacts=true' 
+        }  
       }
+      
     }
     
     stage('Build Crafter CMS') {
