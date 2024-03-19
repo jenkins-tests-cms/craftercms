@@ -2,7 +2,10 @@ pipeline {
   agent any
   stages {
     stage('Checkout CrafterCMS') {
-      checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[credentialsId: 'crafter-qa-ssh', url: 'git@github.com:craftercms/craftercms.git']])
+      steps {
+        checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[credentialsId: 'crafter-qa-ssh', url: 'git@github.com:craftercms/craftercms.git']])  
+      }
+      
       
     }
     
